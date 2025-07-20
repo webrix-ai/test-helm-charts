@@ -1,13 +1,13 @@
-{{- define "hlmfk-0-0-7b59532831.valuesYaml" -}}
-{{- $runtime_app_tag := include "hlmfk-0-0.getValue" (dict "Values" .Values "path" (list "appVersion") "default" "latest") -}}
-{{- $runtime_replicas := include "hlmfk-0-0.getValue" (dict "Values" .Values "path" (list "replicas") "default" "1") -}}
-{{- $runtime_namespace := include "hlmfk-0-0.getValue" (dict "Values" .Values "path" (list "namespace") "default" "mcp-s") -}}
+{{- define "hlmfk-1-2-7b59532831.valuesYaml" -}}
+{{- $runtime_app_tag := include "hlmfk-1-2.getValue" (dict "Values" .Values "path" (list "appVersion") "default" "latest") -}}
+{{- $runtime_replicas := include "hlmfk-1-2.getValue" (dict "Values" .Values "path" (list "replicas") "default" "1") -}}
+{{- $runtime_namespace := include "hlmfk-1-2.getValue" (dict "Values" .Values "path" (list "namespace") "default" "mcp-s") -}}
 {{- $anchor_namespace_default := printf `mcp-s` -}}
 {{- $anchor_replicas_default := printf `1` -}}
 {{- $anchor_app_tag_default := printf `latest` -}}
-{{- $final_namespace := include "hlmfk-0-0.pickFirstNonEmpty" (list $runtime_namespace $anchor_namespace_default) -}}
-{{- $final_replicas := include "hlmfk-0-0.pickFirstNonEmpty" (list $runtime_replicas $anchor_replicas_default) -}}
-{{- $final_app_tag := include "hlmfk-0-0.pickFirstNonEmpty" (list $runtime_app_tag $anchor_app_tag_default) -}}
+{{- $final_namespace := include "hlmfk-1-2.pickFirstNonEmpty" (list $runtime_namespace $anchor_namespace_default) -}}
+{{- $final_replicas := include "hlmfk-1-2.pickFirstNonEmpty" (list $runtime_replicas $anchor_replicas_default) -}}
+{{- $final_app_tag := include "hlmfk-1-2.pickFirstNonEmpty" (list $runtime_app_tag $anchor_app_tag_default) -}}
 {{- $result := printf `# globals:
 #  namespace: "namespace"
 #  namePrefix: "namePrefix"

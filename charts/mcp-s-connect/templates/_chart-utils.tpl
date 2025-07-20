@@ -1,4 +1,4 @@
-{{- define "hlmfk-0-0.getValue" -}}
+{{- define "hlmfk-1-2.getValue" -}}
 {{- $current := .Values -}}
 {{- $found := true -}}
 {{- range $segment := .path -}}
@@ -28,7 +28,7 @@
 {{- end -}}
 {{- end -}}
 
-{{- define "hlmfk-0-0.pickFirstNonEmpty" -}}
+{{- define "hlmfk-1-2.pickFirstNonEmpty" -}}
 {{- $first := index . 0 -}}
 {{- $second := index . 1 -}}
 {{- if $first }}
@@ -38,7 +38,7 @@
 {{- end }}
 {{- end }}
 
-{{- define "hlmfk-0-0.getGlobals" }}
+{{- define "hlmfk-1-2.getGlobals" }}
 {{- if .Values.helmifyPrefix }}
   {{- index .Values .Values.helmifyPrefix }}
 {{- else }}
@@ -46,7 +46,7 @@
 {{- end }}
 {{- end }}
 
-{{- define "hlmfk-0-0.filterManifests" }}
+{{- define "hlmfk-1-2.filterManifests" }}
 {{- $filtered := list }}
 {{- range $i, $v := .manifests }}
   {{- $name := $v.metadata.folder }}
@@ -59,14 +59,14 @@ manifests:
 {{- end }}
 
 
-{{- define "hlmfk-0-0.printManifests" }}
+{{- define "hlmfk-1-2.printManifests" }}
 {{- range $key, $manifest := .manifests }}
 {{ toYaml $manifest.spec}}
 ---
 {{- end }}
 {{- end}}
 
-{{- define "hlmfk-0-0.ensureMetadata" }} 
+{{- define "hlmfk-1-2.ensureMetadata" }} 
 {{- /* gets manifestWarpper */}}
 {{- if .manifest.spec.metadata }}
 {{- else }}
@@ -74,13 +74,13 @@ manifests:
 {{- end }}
 {{- end}}
 
-{{- define "hlmfk-0-0.setNamespace" }} 
+{{- define "hlmfk-1-2.setNamespace" }} 
 {{- if .globals.namespace}}
 {{- $n := set .manifest.spec.metadata "namespace" .globals.namespace -}}
 {{- end }}
 {{- end }}
 
-{{- define "hlmfk-0-0.setNamePrefix" }} 
+{{- define "hlmfk-1-2.setNamePrefix" }} 
 {{- if .globals.namePrefix}}
 {{- if .manifest.spec.metadata.name }}
 {{- $n := set .manifest.spec.metadata "name" (print .globals.namePrefix .manifest.spec.metadata.name ) -}}
@@ -90,7 +90,7 @@ manifests:
 {{- end }}
 {{- end }}
 
-{{- define "hlmfk-0-0.setNameSuffix" }} 
+{{- define "hlmfk-1-2.setNameSuffix" }} 
 {{- if .globals.nameSuffix}}
 {{- if .manifest.spec.metadata.name }}
 {{- $n := set .manifest.spec.metadata "name" (print .manifest.spec.metadata.name .globals.nameSuffix) -}}
@@ -100,7 +100,7 @@ manifests:
 {{- end }}
 {{- end }}
 
-{{- define "hlmfk-0-0.nameReleasePrefix" }} 
+{{- define "hlmfk-1-2.nameReleasePrefix" }} 
 {{- if .globals.nameReleasePrefix}}
 {{- if .manifest.spec.metadata.name }}
 {{- $n := set .manifest.spec.metadata "name" (print .Values.Release.name "-" .manifest.spec.metadata.name) -}}
@@ -110,7 +110,7 @@ manifests:
 {{- end }}
 {{- end }}
 
-{{- define "hlmfk-0-0.updateConfigMap" }}
+{{- define "hlmfk-1-2.updateConfigMap" }}
 {{- $cmName := .name }}
 {{- $patch  := .data }}
 {{- $manifest := .manifest }}
@@ -126,7 +126,7 @@ manifests:
 {{- end }}
 
 
-{{- define "hlmfk-0-0.labels" }} 
+{{- define "hlmfk-1-2.labels" }} 
 {{- if .globals.labels}}
 {{- if .manifest.spec.metadata.labels }}
 {{- else }}
@@ -136,7 +136,7 @@ manifests:
 {{- end }}
 {{- end }}
 
-{{- define "hlmfk-0-0.annotations" }} 
+{{- define "hlmfk-1-2.annotations" }} 
 {{- if .globals.annotations}}
 {{- if .manifest.spec.metadata.annotations }}
 {{- else }}
@@ -147,7 +147,7 @@ manifests:
 {{- end }}
 
 
-{{- define "hlmfk-0-0.addStandardHeaders" -}}
+{{- define "hlmfk-1-2.addStandardHeaders" -}}
 {{- if .manifest.spec.metadata.labels }}
 {{- else }}
 {{- $n := set .manifest.spec.metadata "labels" dict -}}
@@ -162,7 +162,7 @@ manifests:
 {{- end}}
 {{- end -}}
 
-{{- define "hlmfk-0-0.updataImages" }} 
+{{- define "hlmfk-1-2.updataImages" }} 
 {{- $images := "" }}
 {{- if and .globals (hasKey .globals "images") }}
   {{- $images = .globals.images }}
@@ -177,15 +177,15 @@ manifests:
       {{- range $i, $image := $images }}
       
         {{- if regexMatch (printf "^%s(:.*)?$" $image.image) $currentImage }}
-          {{ $newName := include "hlmfk-0-0.image.name"  $container.image }}
+          {{ $newName := include "hlmfk-1-2.image.name"  $container.image }}
           {{- if $image.newName}}
             {{- $newName = $image.newName}}
           {{- end}}
-          {{ $newTag := include "hlmfk-0-0.image.tag"  $container.image }}
+          {{ $newTag := include "hlmfk-1-2.image.tag"  $container.image }}
           {{- if $image.newTag }}
           {{- $newTag = printf ":%s" (print $image.newTag)}}
           {{- end }}
-          {{ $newDigest := include "hlmfk-0-0.image.digest"  $container.image }}
+          {{ $newDigest := include "hlmfk-1-2.image.digest"  $container.image }}
           {{- if $image.digest }}
             {{- $newDigest = printf "@%s" (print $image.digest) }}
           {{- end}}
@@ -204,7 +204,7 @@ manifests:
 {{- end }}
 
 
-{{- define "hlmfk-0-0.image.name" -}}
+{{- define "hlmfk-1-2.image.name" -}}
 {{- $url := . -}}
 {{- $withoutDigest := $url -}}
 {{- if contains "@" $url -}}
@@ -219,7 +219,7 @@ manifests:
 {{- end -}}
 {{- end -}}
 
-{{- define "hlmfk-0-0.image.tag" -}}
+{{- define "hlmfk-1-2.image.tag" -}}
 {{- $url := . -}}
 {{- $withoutDigest := $url -}}
 {{- if contains "@" $url -}}
@@ -235,7 +235,7 @@ manifests:
 {{- end -}}
 {{- end -}}
 
-{{- define "hlmfk-0-0.image.digest" -}}
+{{- define "hlmfk-1-2.image.digest" -}}
 {{- $url := . -}}
 {{- $parts := split "@" $url -}}
 {{- if gt (len $parts) 1 -}}
@@ -245,7 +245,7 @@ manifests:
 {{- end -}}
 {{- end -}}
 
-{{- define "hlmfk-0-0.applyPatches" -}}
+{{- define "hlmfk-1-2.applyPatches" -}}
 {{- $object := .object -}}
 {{- $patches := .patches -}}
 {{- range $patches -}}
@@ -427,7 +427,7 @@ manifests:
 {{- end -}}
 
 {{- /* Enhanced helper function to check if a resource matches a target selector */ -}}
-{{- define "hlmfk-0-0.matchesTarget" -}}
+{{- define "hlmfk-1-2.matchesTarget" -}}
 {{- $resource := .resource -}}
 {{- $target := .target -}}
 {{- $match := true -}}
@@ -498,7 +498,7 @@ manifests:
 {{- /* Check label selector matching */ -}}
 {{- if hasKey $target "labelSelector" -}}
   {{- $labelSelector := $target.labelSelector -}}
-  {{- $labelMatch := include "hlmfk-0-0.matchesLabelSelector" (dict "labels" $labels "selector" $labelSelector) -}}
+  {{- $labelMatch := include "hlmfk-1-2.matchesLabelSelector" (dict "labels" $labels "selector" $labelSelector) -}}
   {{- if ne (trim $labelMatch) "true" -}}
     {{- $match = false -}}
   {{- end -}}
@@ -507,7 +507,7 @@ manifests:
 {{- /* Check annotation selector matching */ -}}
 {{- if hasKey $target "annotationSelector" -}}
   {{- $annotationSelector := $target.annotationSelector -}}
-  {{- $annotationMatch := include "hlmfk-0-0.matchesAnnotationSelector" (dict "annotations" $annotations "selector" $annotationSelector) -}}
+  {{- $annotationMatch := include "hlmfk-1-2.matchesAnnotationSelector" (dict "annotations" $annotations "selector" $annotationSelector) -}}
   {{- if ne (trim $annotationMatch) "true" -}}
     {{- $match = false -}}
   {{- end -}}
@@ -517,7 +517,7 @@ manifests:
 {{- end -}}
 
 {{- /* Helper function to check label selector matching */ -}}
-{{- define "hlmfk-0-0.matchesLabelSelector" -}}
+{{- define "hlmfk-1-2.matchesLabelSelector" -}}
 {{- $labels := .labels -}}
 {{- $selector := .selector -}}
 {{- $match := true -}}
@@ -591,7 +591,7 @@ manifests:
 {{- end -}}
 
 {{- /* Helper function to check annotation selector matching */ -}}
-{{- define "hlmfk-0-0.matchesAnnotationSelector" -}}
+{{- define "hlmfk-1-2.matchesAnnotationSelector" -}}
 {{- $annotations := .annotations -}}
 {{- $selector := .selector -}}
 {{- $match := true -}}
@@ -664,7 +664,7 @@ manifests:
 {{- $match -}}
 {{- end -}}
 
-{{- define "hlmfk-0-0.applyTargetedPatches" -}}
+{{- define "hlmfk-1-2.applyTargetedPatches" -}}
 {{- $resources := .resources -}}
 {{- $patches := .patches -}}
 {{- range $patches -}}
@@ -673,16 +673,16 @@ manifests:
   {{- range $resources -}}
     {{- $resource := . -}}
     {{- /* Check if this resource matches the target using enhanced matching */ -}}
-    {{- $matches := include "hlmfk-0-0.matchesTarget" (dict "resource" $resource "target" $target) -}}
+    {{- $matches := include "hlmfk-1-2.matchesTarget" (dict "resource" $resource "target" $target) -}}
     {{- if eq (trim $matches) "true" -}}
       {{- /* Apply operations to this resource */ -}}
-      {{- include "hlmfk-0-0.applyPatches" (dict "object" $resource "patches" $ops) -}}
+      {{- include "hlmfk-1-2.applyPatches" (dict "object" $resource "patches" $ops) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 {{- end -}}
 
-{{- define "hlmfk-0-0.applyManifestPatchers" -}}
+{{- define "hlmfk-1-2.applyManifestPatchers" -}}
 {{- $manifest := .manifest -}}
 {{- $globals := .globals -}}
 {{- if $globals.patches -}}
@@ -694,10 +694,10 @@ manifests:
     {{- $target := .target -}}
     {{- $ops := .ops -}}
     {{- /* Check if target matches using enhanced matching */ -}}
-    {{- $matches := include "hlmfk-0-0.matchesTarget" (dict "resource" $resource "target" $target) -}}
+    {{- $matches := include "hlmfk-1-2.matchesTarget" (dict "resource" $resource "target" $target) -}}
     {{- if eq (trim $matches) "true" -}}
       {{- /* Apply operations to this resource */ -}}
-      {{- include "hlmfk-0-0.applyPatches" (dict "object" $resource "patches" $ops) -}}
+      {{- include "hlmfk-1-2.applyPatches" (dict "object" $resource "patches" $ops) -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

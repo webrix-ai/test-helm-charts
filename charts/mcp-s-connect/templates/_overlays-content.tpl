@@ -1,4 +1,4 @@
-{{- define "hlmfk-0-0-7dfd7dcbdd.yamls" }}
+{{- define "hlmfk-1-2-7dfd7dcbdd.yamls" }}
 {{- if .Values.overlay }}
 {{- if eq .Values.overlay "overlays/on-prem" }}
 manifests:

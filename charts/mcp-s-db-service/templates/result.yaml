@@ -1,9 +1,9 @@
 
 
-{{- $templateValues := fromYaml (include "hlmfk-0-0-7b59532831.valuesYaml" (dict "Values" .Values)) }}
+{{- $templateValues := fromYaml (include "hlmfk-1-2-7b59532831.valuesYaml" (dict "Values" .Values)) }}
 {{- $values := merge $templateValues (pick .Values "overlay") }}
 
-{{- $all := fromYaml (include "hlmfk-0-0-7b59532831.yamls" (dict "Values" $values) ) }}
+{{- $all := fromYaml (include "hlmfk-1-2-7b59532831.yamls" (dict "Values" $values) ) }}
 
 
 {{- if $values.manifests }}
@@ -20,21 +20,21 @@
 {{- else }}
   {{- $globals = $values.globals }}
 {{- end }}
-{{- include "hlmfk-0-0.ensureMetadata" (dict "manifest" $manifest)}}
-{{- include "hlmfk-0-0.updataImages" (dict "manifest" $manifest "globals" $globals)}}
+{{- include "hlmfk-1-2.ensureMetadata" (dict "manifest" $manifest)}}
+{{- include "hlmfk-1-2.updataImages" (dict "manifest" $manifest "globals" $globals)}}
 {{- if $globals }}
-{{- include "hlmfk-0-0.setNamespace" (dict "manifest" $manifest "globals" $globals)}}
-{{- include "hlmfk-0-0.setNamePrefix" (dict "manifest" $manifest "globals" $globals)}}
-{{- include "hlmfk-0-0.setNameSuffix" (dict "manifest" $manifest "globals" $globals)}}
-{{- include "hlmfk-0-0.nameReleasePrefix" (dict "manifest" $manifest "globals" $globals "Values" $values)}}
-{{- include "hlmfk-0-0.labels" (dict "manifest" $manifest "globals" $globals)}}
-{{- include "hlmfk-0-0.annotations" (dict "manifest" $manifest "globals" $globals)}}
-{{- include "hlmfk-0-0.applyManifestPatchers" (dict "manifest" $manifest "globals" $globals)}}
+{{- include "hlmfk-1-2.setNamespace" (dict "manifest" $manifest "globals" $globals)}}
+{{- include "hlmfk-1-2.setNamePrefix" (dict "manifest" $manifest "globals" $globals)}}
+{{- include "hlmfk-1-2.setNameSuffix" (dict "manifest" $manifest "globals" $globals)}}
+{{- include "hlmfk-1-2.nameReleasePrefix" (dict "manifest" $manifest "globals" $globals "Values" $values)}}
+{{- include "hlmfk-1-2.labels" (dict "manifest" $manifest "globals" $globals)}}
+{{- include "hlmfk-1-2.annotations" (dict "manifest" $manifest "globals" $globals)}}
+{{- include "hlmfk-1-2.applyManifestPatchers" (dict "manifest" $manifest "globals" $globals)}}
 {{- end}}
 
 
 {{- if and (hasKey $.Values "env") }}
-{{ include "hlmfk-0-0.updateConfigMap" (dict "manifest" $manifest "name" "mcp-s-db-service-container-vars" "data" $.Values.env) }}
+{{ include "hlmfk-1-2.updateConfigMap" (dict "manifest" $manifest "name" "mcp-s-db-service-container-vars" "data" $.Values.env) }}
 {{- end }}
 
 {{- end }}
@@ -48,5 +48,5 @@
 {{- end }}
 {{- end }}
 
-{{- include "hlmfk-0-0.printManifests" $all }}
+{{- include "hlmfk-1-2.printManifests" $all }}
         
