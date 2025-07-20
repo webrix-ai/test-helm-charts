@@ -1,0 +1,102 @@
+# Helm
+*.tgz
+*.lock
+.helmignore
+**/charts/*.tgz
+**/Chart.lock
+**/charts/*.prov
+
+# Helm dependency charts (downloaded by helm dependency build)
+# Only ignore charts inside each chart's subdirectory, not the main charts folder
+charts/*/charts/
+charts/*/*/charts/
+
+# Helm test output
+*.test
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Backup files
+*.bak
+*.backup
+
+# K8s generated files
+*.kubeconfig
+kubeconfig
+
+# Secrets
+*secret*
+*.pem
+*.key
+*.crt
+*.cer
+*.pfx
+
+# Rendered templates (for testing)
+rendered/
+output/
+manifests/
+
+# Local values overrides
+values.local.yaml
+values.*.local.yaml
+override*.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Terraform (if used for infrastructure)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Archives
+*.tar
+*.tar.gz
+*.zip
+*.rar
+
+# Coverage reports
+coverage/
+*.coverage
+.coverage.*
+
+# Test reports
+test-results/
+junit.xml
