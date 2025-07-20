@@ -1,0 +1,37 @@
+apiVersion: v2
+name: mcp-s
+description: A Helm chart for Webrix application
+type: application
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+version: 0.1.48
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application.
+appVersion: "1.0.1"
+# Dependencies specify other charts that this chart depends on
+dependencies:
+  - name: app
+    version: "x.x.x"
+    repository: "file://../mcp-s-app"
+    condition: app.enabled
+  - name: connect
+    version: "x.x.x"
+    repository: "file://../mcp-s-connect"
+    condition: connect.enabled
+  - name: db-service
+    alias: dbservice
+    version: "x.x.x"
+    repository: "file://../mcp-s-db-service"
+    condition: dbservice.enabled
+  - name: run
+    version: "x.x.x"
+    repository: "file://../mcp-s-run"
+    condition: run.enabled
+  - name: grafana
+    version: "x.x.x"
+    repository: "file://../mcp-s-grafana"
+    condition: grafana.enabled
+  - name: postgresql
+    version: "16.7.12"
+    repository: "oci://registry-1.docker.io/bitnamicharts"
+    condition: postgresql.enabled

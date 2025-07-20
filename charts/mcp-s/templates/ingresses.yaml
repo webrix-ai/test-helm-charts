@@ -1,0 +1,3 @@
+{{ include "webrix.ingress" (dict "ingress" .Values.app.ingress "context" $) }}
+{{ include "webrix.ingress" (dict "ingress" .Values.connect.ingress "context" $) }}
+{{ include "webrix.ingress" (dict "ingress" .Values.run.ingress "context" $) }}

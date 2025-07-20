@@ -1,0 +1,85 @@
+{{- define "hlmfk-0-0-36087aa001.yamls" }}
+{{- if .Values.overlay }}
+{{- if eq .Values.overlay "overlays/on-prem" }}
+manifests:
+  - spec: 
+      apiVersion: v1
+      data:
+        AUTH_SECRET: {{ .Values.env.AUTH_SECRET | quote }}
+        DB_AUTH_SECRET: {{ .Values.env.DB_AUTH_SECRET | quote }}
+        DB_BASE_URL: {{ .Values.env.DB_BASE_URL | quote }}
+        NEXTAUTH_SECRET: {{ .Values.env.NEXTAUTH_SECRET | quote }}
+        ON_PREM: {{ .Values.env.ON_PREM | quote }}
+        ORG: {{ .Values.env.ORG | quote }}
+        PORT: {{ .Values.env.PORT | quote }}
+      kind: ConfigMap
+      metadata:
+        labels:
+          app: mcp-s-app
+          app.kubernetes.io/version: ""
+        name: mcp-s-app-container-vars
+        namespace: webrix
+  - spec: 
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        labels:
+          app: mcp-s-app
+          app.kubernetes.io/version: ""
+        name: mcp-s-app-environment-values
+        namespace: webrix
+  - spec: 
+      apiVersion: v1
+      kind: Service
+      metadata:
+        labels:
+          app: mcp-s-app
+          app.kubernetes.io/version: ""
+        name: mcp-s-app
+        namespace: webrix
+      spec:
+        ports:
+        - port: 80
+          protocol: TCP
+          targetPort: 3000
+        selector:
+          app: mcp-s-app
+  - spec: 
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        labels:
+          app: mcp-s-app
+          app.kubernetes.io/version: ""
+        name: mcp-s-app
+        namespace: webrix
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: mcp-s-app
+        template:
+          metadata:
+            labels:
+              app: mcp-s-app
+          spec:
+            containers:
+            - envFrom:
+              - configMapRef:
+                  name: mcp-s-app-container-vars
+              image: quay.io/idan-chetrit/mcp-s-app:latest
+              name: mcp-s-app
+              ports:
+              - containerPort: 3000
+              resources:
+                limits:
+                  cpu: 1000m
+                  memory: 2048Mi
+                requests:
+                  cpu: 100m
+                  memory: 200Mi
+{{- else}}
+{{- end }}
+{{- else }}
+manifests: []
+{{- end }}{{- end }}

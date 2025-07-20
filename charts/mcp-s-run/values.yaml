@@ -1,0 +1,82 @@
+# To control the output of the manifests, you can use the following properties in the globals section:
+# FYI helm chart has the concept globals but it's with the property name "global" and not "globals"
+# helmifyPrefix: "globals"
+# globals:
+#  addStandardHeaders: false # by default it's true, `true` will add the standard helm headers to the manifests
+#  namespace: "namespace"
+#  namePrefix: "namePrefix"
+#  nameSuffix: "nameSuffix"
+#  nameReleasePrefix: "nameReleasePrefix"
+#  labels:
+#    key: "label"
+#  annotations:
+#    key: "annotation"
+#  resources:
+#    - name: "resource"
+#      version: "v1"
+#      kind: "Resource"
+#   images:
+#    - image: "old-image"
+#      newName: "new-image"
+#      newTag: "new-tag"
+#      digest: "digest"
+#      pullSecrets:
+#       - name: "pull-secret"
+#  patches:
+#    - target:
+#      group: "apps"
+#      version: "v1"
+#      kind: "Deployment"
+#      name: "nginx-deployment"
+#    ops:
+#      - op: "add"
+#        path: "/spec/template/spec/containers/0/env/-"
+#        value:
+#          name: "LOG_LEVEL"
+#          value: "debug"
+# globals:
+#  namespace: "namespace"
+#  namePrefix: "namePrefix"
+#  nameSuffix: "nameSuffix"
+#  nameReleasePrefix: "nameReleasePrefix"
+#  labels:
+#    key: "label"
+#  annotations:
+#    key: "annotation"
+#  images:
+#    - image: "old-image"
+#      newName: "new-image"
+#      newTag: "new-tag"
+#      digest: "digest"
+#      pullSecrets:
+#        - name: "pull-secret"
+#  resources:
+#    - name: "resource"
+#      version: "v1"
+#      kind: "Resource"
+overlay: "overlays/on-prem"
+namespace: &namespace "mcp-s"
+replicas: &replicas 1
+appVersion: &app_tag latest
+globals:
+  addStandardHeaders: false
+  images:
+    - image: quay.io/idan-chetrit/mcp-s-run
+      newTag: *app_tag
+  namespace: *namespace
+  patches:
+    - target:
+        kind: Deployment
+        name: mcp-s-run
+      ops:
+        - op: add
+          path: /spec/replicas
+          value: *replicas
+env:
+  DB_SERVICE_URL: http://mcp-s-db-service
+  PORT: "3000"
+  AUTH_SECRET: ZI39UlR2sN6HFZauuze0iNEZnNkF1wiOuGklm3bC8dk=
+  BASE_URL: https://run.mcp-s.com
+  CONNECT_URL: https://connect2.mcp-s.com
+  LOG_LEVEL: info
+  ORG: on-prem-org

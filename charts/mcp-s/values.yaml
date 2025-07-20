@@ -1,0 +1,176 @@
+# IMPORTANT:
+# The 'db_provider' and 'postgresql.enabled' flags must be consistent.
+# - To use the in-cluster PostgreSQL database, set:
+#   db_provider: "postgresql"
+#   postgresql.enabled: true
+#
+# - To use an external database, set:
+#   db_provider: "external"
+#   postgresql.enabled: false
+#   dbservice.DATABASE_URL: "your-external-db-connection-string"
+
+global:
+  # Use 'postgresql' for in-cluster db, or 'external' for external db
+  db_provider: "postgresql" # postgresql | external
+
+namespace: &namespace webrix-mcp-s
+host: &host mcp-s.com
+connect_url: &connect_url https://connect.mcp-s.com
+app_url: &app_url https://app.mcp-s.com
+
+ingressClassName: &ingressClassName nginx
+ingressAnnotations: &ingressAnnotations
+  nginx.ingress.kubernetes.io/rewrite-target: /
+
+connect:
+  env:
+    NEXTAUTH_URL: *connect_url
+  enabled: true
+  globals:
+    namespace: *namespace
+  namespace: *namespace
+  replicas: 1
+  appVersion: latest # will be overriden the image tag
+  applicationVersion: latest  # temporary until pr in deployment is merged
+  ingress:
+    className: *ingressClassName
+    name: connect
+    enabled: true
+    namespace: *namespace
+    annotations: *ingressAnnotations
+    hosts:
+      - host: *host
+        subdomain: connect.
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: mcp-s-connect
+app:
+  env:
+    NEXTAUTH_URL: *app_url
+    NEXT_PUBLIC_CONNECT_URL: *connect_url
+  globals:
+    namespace: *namespace
+  namespace: *namespace
+  replicas: 1
+  enabled: true
+  appVersion: latest  # will be overriden the image tag
+  applicationVersion: latest  # temporary until pr in deployment is merged
+  ingress:
+    className: *ingressClassName
+    name: app
+    enabled: true
+    namespace: *namespace
+    annotations: *ingressAnnotations
+    hosts:
+      - host: *host
+        subdomain: app.
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: mcp-s-app
+
+run:
+  globals:
+    namespace: *namespace
+  namespace: *namespace
+  replicas: 1
+  enabled: true
+  appVersion: latest  # will be overriden the image tag
+  applicationVersion: latest  # temporary until pr in deployment is merged
+  ingress:
+    className: *ingressClassName
+    name: run
+    enabled: true
+    namespace: *namespace
+    annotations: *ingressAnnotations
+    hosts:
+      - host: *host
+        subdomain: run.
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: mcp-s-run
+
+dbservice:
+  enabled: true
+  namespace: *namespace
+  replicas: 1
+  appVersion: latest  # will be overriden the image tag
+  applicationVersion: latest  # temporary until pr in deployment is merged
+  env:
+    CONNECT_URL: *connect_url
+    DATABASE_URL: "postgres://postgres:postgres@mcp-s-postgresql:5432/postgres?sslmode=disable"
+  globals:
+    namespace: *namespace
+  
+
+grafana:
+  enabled: false
+  namespace: *namespace
+  replicas: 1
+  appVersion: latest  # will be overriden the image tag
+  applicationVersion: latest  # temporary until pr in deployment is merged
+  globals:
+    namespace: *namespace
+  env:
+    GRAFANA_URL: "http://localhost:3000"
+    GRAFANA_API_KEY: ""
+  service:
+    port: 8000
+    targetPort: 8000
+
+# PostgreSQL sub-chart values. For a full list of values, see:
+# https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+postgresql:
+  # controls enabling/disabling the postgresql subchart.
+  # it will be enabled if db_provider is 'postgresql'.
+  enabled: true
+
+  # The chart will use the appropriate default PostgreSQL 17.x version
+  # image:
+  #   tag: "17.2.0-debian-12-r5"  # Can override, but not recommended
+
+  # Authentication configuration
+  auth:
+    enablePostgresUser: true
+    # postgresPassword: ""  # Empty password for trust auth
+    postgresPassword: "postgres"
+
+  # Use resourcesPreset for non-production instead of manual resources.
+  # In production workloads using resourcesPreset is discouraged as it may not fully adapt to your specific needs.
+  # Options: nano, micro, small, medium, large, xlarge, 2xlarge
+  resourcesPreset: "small" # Equivalent to ~500m CPU, 512Mi memory
+
+  # Primary configuration
+  primary:
+    # Persistence (equivalent to volumes in docker-compose)
+    persistence:
+      enabled: true
+      size: 8Gi
+      # You can specify a storage class if needed, such as "gp2" for AWS EBS.
+      # Leave empty to use the default storage class (assuming one exists in the cluster)
+      storageClass: ""
+
+  # Read replicas configuration (required to avoid warnings)
+  readReplicas:
+    # We're using standalone, but this prevents the warning
+    replicaCount: 0
+
+  # Service configuration (equivalent to ports: 5432:5432)
+  service:
+    type: ClusterIP
+    ports:
+      postgresql: 5432
+
+  # Metrics and monitoring (optional)
+  metrics:
+    enabled: false
+
+  # Disable read replicas for simplicity
+  architecture: standalone
+
+  # PostgreSQL configuration
+  postgresqlConfiguration:
+    listen_addresses: "'*'"
+    max_connections: "200"

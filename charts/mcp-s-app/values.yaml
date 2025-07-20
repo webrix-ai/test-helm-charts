@@ -1,0 +1,82 @@
+# To control the output of the manifests, you can use the following properties in the globals section:
+# FYI helm chart has the concept globals but it's with the property name "global" and not "globals"
+# helmifyPrefix: "globals"
+# globals:
+#  addStandardHeaders: false # by default it's true, `true` will add the standard helm headers to the manifests
+#  namespace: "namespace"
+#  namePrefix: "namePrefix"
+#  nameSuffix: "nameSuffix"
+#  nameReleasePrefix: "nameReleasePrefix"
+#  labels:
+#    key: "label"
+#  annotations:
+#    key: "annotation"
+#  resources:
+#    - name: "resource"
+#      version: "v1"
+#      kind: "Resource"
+#   images:
+#    - image: "old-image"
+#      newName: "new-image"
+#      newTag: "new-tag"
+#      digest: "digest"
+#      pullSecrets:
+#       - name: "pull-secret"
+#  patches:
+#    - target:
+#      group: "apps"
+#      version: "v1"
+#      kind: "Deployment"
+#      name: "nginx-deployment"
+#    ops:
+#      - op: "add"
+#        path: "/spec/template/spec/containers/0/env/-"
+#        value:
+#          name: "LOG_LEVEL"
+#          value: "debug"
+# globals:
+#  namespace: "namespace"
+#  namePrefix: "namePrefix"
+#  nameSuffix: "nameSuffix"
+#  nameReleasePrefix: "nameReleasePrefix"
+#  labels:
+#    key: "label"
+#  annotations:
+#    key: "annotation"
+#  images:
+#    - image: "old-image"
+#      newName: "new-image"
+#      newTag: "new-tag"
+#      digest: "digest"
+#      pullSecrets:
+#        - name: "pull-secret"
+#  resources:
+#    - name: "resource"
+#      version: "v1"
+#      kind: "Resource"
+overlay: "overlays/on-prem"
+namespace: &namespace "mcp-s"
+replicas: &replicas 1
+appVersion: &app_tag latest
+globals:
+  addStandardHeaders: false
+  images:
+    - image: quay.io/idan-chetrit/mcp-s-app
+      newTag: *app_tag
+  namespace: *namespace
+  patches:
+    - target:
+        kind: Deployment
+        name: mcp-s-app
+      ops:
+        - op: add
+          path: /spec/replicas
+          value: *replicas
+env:
+  DB_BASE_URL: http://mcp-s-db-service
+  AUTH_SECRET: aUi2V5iCVqUrbrdjKty1zH4HCqszXArV9BLVU2giqhY=
+  DB_AUTH_SECRET: ZI39UlR2sN6HFZauuze0iNEZnNkF1wiOuGklm3bC8dk=
+  PORT: "3000"
+  NEXTAUTH_SECRET: Qw8rTz2vXy5pLm9nJk4sVb7cHn3dZx1aE6uYqPoRtS8w=
+  ORG: on-prem-org
+  ON_PREM: "true"
