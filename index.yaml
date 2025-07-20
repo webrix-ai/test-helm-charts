@@ -1,0 +1,90 @@
+apiVersion: v1
+entries:
+  app:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2025-07-20T06:17:37.772053102Z"
+    description: A Helm chart for Kubernetes
+    digest: dffde7db962151beff3cc2d497b21fa680bf8c3620dc3acd5feb09aee916318b
+    name: app
+    urls:
+    - https://github.com/webrix-ai/test-helm-charts/releases/download/app-0.1.48/app-0.1.48.tgz
+    version: 0.1.48
+  connect:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2025-07-20T06:17:37.867600541Z"
+    description: A Helm chart for Kubernetes
+    digest: 197e27b56d7f4c3da93a3857bd21741410962f507fc0e887f5b5209f889dab63
+    name: connect
+    urls:
+    - https://github.com/webrix-ai/test-helm-charts/releases/download/connect-0.1.48/connect-0.1.48.tgz
+    version: 0.1.48
+  db-service:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2025-07-20T06:17:38.015473235Z"
+    description: A Helm chart for Kubernetes
+    digest: 8ea76b1fd3aa1f1cb23a29ccec2fe57512d14627e8dac5dad4533a47953a8819
+    name: db-service
+    urls:
+    - https://github.com/webrix-ai/test-helm-charts/releases/download/db-service-0.1.48/db-service-0.1.48.tgz
+    version: 0.1.48
+  grafana:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2025-07-20T06:17:38.109802989Z"
+    description: A Helm chart for Kubernetes
+    digest: 7b9467453c9b3ebb1d487e7198c0cbb9d175b8ac4c9727f5da509bd6d1e5f86d
+    name: grafana
+    urls:
+    - https://github.com/webrix-ai/test-helm-charts/releases/download/grafana-0.1.48/grafana-0.1.48.tgz
+    version: 0.1.48
+  mcp-s:
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2025-07-20T06:17:38.224935548Z"
+    dependencies:
+    - condition: app.enabled
+      name: app
+      repository: file://../mcp-s-app
+      version: x.x.x
+    - condition: connect.enabled
+      name: connect
+      repository: file://../mcp-s-connect
+      version: x.x.x
+    - alias: dbservice
+      condition: dbservice.enabled
+      name: db-service
+      repository: file://../mcp-s-db-service
+      version: x.x.x
+    - condition: run.enabled
+      name: run
+      repository: file://../mcp-s-run
+      version: x.x.x
+    - condition: grafana.enabled
+      name: grafana
+      repository: file://../mcp-s-grafana
+      version: x.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 16.7.12
+    description: A Helm chart for Webrix application
+    digest: a8da7d14e35d4a50e9db205354ff04f435eaef6a05879e70bd1e20efe43772e8
+    name: mcp-s
+    type: application
+    urls:
+    - https://github.com/webrix-ai/test-helm-charts/releases/download/mcp-s-0.1.48/mcp-s-0.1.48.tgz
+    version: 0.1.48
+  run:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2025-07-20T06:17:38.38370216Z"
+    description: A Helm chart for Kubernetes
+    digest: 89f660962f61985cb46e6b2ceaa0c95962ddd766dbe692f74d00a4d275d893bb
+    name: run
+    urls:
+    - https://github.com/webrix-ai/test-helm-charts/releases/download/run-0.1.48/run-0.1.48.tgz
+    version: 0.1.48
+generated: "2025-07-20T06:17:38.38371297Z"
