@@ -55,7 +55,7 @@
 #      version: "v1"
 #      kind: "Resource"
 overlay: "overlays/on-prem"
-namespace: &namespace "mcp-s"
+namespace: &namespace webrix-mcp-s
 replicas: &replicas 1
 appVersion: &app_tag latest
 globals:

@@ -55,7 +55,7 @@
 #      version: "v1"
 #      kind: "Resource"
 overlay: "overlays/on-prem"
-namespace: &namespace "mcp-s"
+namespace: &namespace webrix-mcp-s
 replicas: &replicas 1
 appVersion: &app_tag latest
 globals:
@@ -77,7 +77,7 @@ env:
   POSTGRES_HOST_AUTH_METHOD: trust
   PORT: "3000"
   AUTH_SECRET: ZI39UlR2sN6HFZauuze0iNEZnNkF1wiOuGklm3bC8dk=
-  CONNECT_URL: https://mcp-s-connect.mcp-s.com
+  CONNECT_URL: https://connect.mcp-s.com
   AUTO_AUTHENTICATE_TOKEN: balQgAqCpKW979XoibTYSbfCjvj7uSJK+90m0iQG5
   RATE_LIMIT_MAX: "1000"
   RATE_LIMIT_WINDOW: "60000"

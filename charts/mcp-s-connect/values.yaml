@@ -55,7 +55,7 @@
 #      version: "v1"
 #      kind: "Resource"
 overlay: "overlays/on-prem"
-namespace: &namespace "mcp-s"
+namespace: &namespace webrix-mcp-s
 replicas: &replicas 1
 appVersion: &app_tag latest
 globals:
@@ -76,10 +76,10 @@ env:
   AUTH_SECRET: aUi2V5iCVqUrbrdjKty1zH4HCqszXArV9BLVU2giqhY=
   DB_AUTH_SECRET: ZI39UlR2sN6HFZauuze0iNEZnNkF1wiOuGklm3bC8dk=
   DB_BASE_URL: http://mcp-s-db-service
-  NEXTAUTH_URL: https://connect2.mcp-s.com
+  NEXTAUTH_URL: https://connect.mcp-s.com
   PORT: "3000"
   AUTO_AUTHENTICATE_TOKEN: balQgAqCpKW979XoibTYSbfCjvj7uSJK+90m0iQG5
-  RUN_URL: https://run2.mcp-s.com
+  RUN_URL: https://run.mcp-s.com
   ON_PREM: "true"
   ORG: on-prem-org
   DEBUG: "true"

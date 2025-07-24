@@ -55,7 +55,7 @@
 #      version: "v1"
 #      kind: "Resource"
 overlay: "overlays/on-prem"
-namespace: &namespace "mcp-s"
+namespace: &namespace webrix-mcp-s
 replicas: &replicas 1
 appVersion: &app_tag latest
 globals:
@@ -77,6 +77,6 @@ env:
   PORT: "3000"
   AUTH_SECRET: ZI39UlR2sN6HFZauuze0iNEZnNkF1wiOuGklm3bC8dk=
   BASE_URL: https://run.mcp-s.com
-  CONNECT_URL: https://connect2.mcp-s.com
+  CONNECT_URL: https://connect.mcp-s.com
   LOG_LEVEL: info
   ORG: on-prem-org
