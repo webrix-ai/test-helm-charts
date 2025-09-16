@@ -58,11 +58,16 @@ overlay: "overlays/on-prem"
 namespace: &namespace webrix-mcp-s
 replicas: &replicas 1
 appVersion: &app_tag latest
+registry: &registry quay.io/idan-chetrit/mcp-s-app
+secretName: &secret_name mcp-s-app-container-secret-vars
+nodeSelector: &nodeSelector
+  prometheus.io/scrape: "test"
 globals:
   addStandardHeaders: false
   images:
     - image: quay.io/idan-chetrit/mcp-s-app
       newTag: *app_tag
+      newName: *registry
   namespace: *namespace
   patches:
     - target:
@@ -72,6 +77,12 @@ globals:
         - op: add
           path: /spec/replicas
           value: *replicas
+        - op: add
+          path: /spec/template/spec/containers/0/envFrom/1/secretRef/name
+          value: *secret_name
+        - op: add
+          path: /spec/template/spec/nodeSelector
+          value: *nodeSelector
 env:
   DB_BASE_URL: http://mcp-s-db-service
   AUTH_SECRET: aUi2V5iCVqUrbrdjKty1zH4HCqszXArV9BLVU2giqhY=

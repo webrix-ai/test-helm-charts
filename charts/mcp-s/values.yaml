@@ -51,9 +51,13 @@ app:
   globals:
     namespace: *namespace
   namespace: *namespace
-  replicas: 1
+  replicas: 8
   enabled: true
-  appVersion: latest  # will be overriden the image tag
+  appVersion: other-tag
+  registry: other-registry
+  nodeSelector:
+    prometheus.io/scrape: "hey"
+
   ingress:
     className: *ingressClassName
     name: app
