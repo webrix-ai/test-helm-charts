@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+paths = [
+  '''gitleaks''',
+  '''templates/_values.yaml''',
+  '''^charts(?:/.+)?/values\.yaml$'''
+]
